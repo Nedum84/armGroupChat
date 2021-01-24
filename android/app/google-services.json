@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "852534633519",
+    "project_id": "arm-group",
+    "storage_bucket": "arm-group.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:852534633519:android:b19e9e772508d59ec7d2da",
+        "android_client_info": {
+          "package_name": "com.app.arm_group_chat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "852534633519-g6rtt52q2n9fdj1id1mpiuuj34q35klg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.app.arm_group_chat",
+            "certificate_hash": "1eddc2b9606d0e71523016606d0e04e1c50db37a"
+          }
+        },
+        {
+          "client_id": "852534633519-k6437kbknif3evjso0posgtb9j5hcisv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBWdES8PN4aqohlr5gH7gjWvKYTpgqpM40"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "852534633519-k6437kbknif3evjso0posgtb9j5hcisv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
