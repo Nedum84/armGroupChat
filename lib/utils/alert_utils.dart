@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:arm_group_chat/utils/colors.dart';
-// import 'package:fluttertoast/fluttertoast.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 
 
@@ -27,17 +27,17 @@ class AlertUtils{
   }
 
 
-  // static void toast(String content, {ToastGravity gravity = ToastGravity.BOTTOM, Toast tLength = Toast.LENGTH_SHORT} ){
-  //   Fluttertoast.showToast(
-  //       msg: content,
-  //       toastLength: tLength,
-  //       gravity: gravity,
-  //       timeInSecForIosWeb: 1,
-  //       backgroundColor: kColorPrimary,
-  //       textColor: Colors.white,
-  //       fontSize: 16.0
-  //   );
-  // }
+  static void toast(String content, {ToastGravity gravity = ToastGravity.BOTTOM, Toast tLength = Toast.LENGTH_SHORT} ){
+    Fluttertoast.showToast(
+        msg: content,
+        toastLength: tLength,
+        gravity: gravity,
+        timeInSecForIosWeb: 1,
+        backgroundColor: kColorPrimary,
+        textColor: Colors.white,
+        fontSize: 16.0
+    );
+  }
 
 
 }

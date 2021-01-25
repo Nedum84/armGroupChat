@@ -1,3 +1,4 @@
+import 'package:arm_group_chat/screen/chat/chat_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:arm_group_chat/utils/colors.dart';
 import 'package:arm_group_chat/repository/auth_repo.dart';
@@ -31,7 +32,7 @@ class _LoginRegisterState extends State<LoginRegister> {
     Firebase.initializeApp().whenComplete(() async {
       _authRepo = AuthRepo();
       FirebaseAuth.instance.authStateChanges().listen((User user) async {
-        if (user != null && user.displayName != null) {
+        if (user != null) {
           gotoHomePage();
         } else {
           // setState(() => _loadingStage = LoadingStage.NOT_LOADING);
@@ -42,9 +43,9 @@ class _LoginRegisterState extends State<LoginRegister> {
 
   _toggleState(){
     if(logRegState == LogRegState.LOGIN)
-      logRegState = LogRegState.REGISTER;
+      setState(() => logRegState = LogRegState.REGISTER);
     else
-      logRegState = LogRegState.LOGIN;
+      setState(() => logRegState = LogRegState.LOGIN);
   }
 
   _logOrReg() {
@@ -53,7 +54,55 @@ class _LoginRegisterState extends State<LoginRegister> {
 
     String email = emailController.text.trim();
     String password = passwordController.text.trim();
-    print('fgfgfg');
+    //
+    if(email.isEmpty||email.isEmpty){
+      AlertUtils.toast('Email & password are required');
+    }else {
+      if(logRegState == LogRegState.REGISTER){
+        _emailRegister(email, password);
+      }else{
+        _emailSignIn(email, password);
+      }
+    }
+  }
+  _emailRegister(String email, String password) async {
+    try {
+      final newUser = await FirebaseAuth.instance.createUserWithEmailAndPassword(email: email, password: password);
+      if (newUser != null) {
+        AlertUtils.toast("Registration successful.");
+        authenticateUser(newUser.user);
+      }
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'weak-password') {
+        AlertUtils.toast('The password provided is too weak.');
+      } else if (e.code == 'email-already-in-use') {
+        AlertUtils.toast('The account already exists for that email.');
+      }else{
+        AlertUtils.toast('${e.code}');
+      }
+    } catch (e) {//e is the error message like 'The email address is already in use by another account.'
+      print(e);
+    }
+  }
+  _emailSignIn(String email, String password) async {
+    try {
+      final newUser = await FirebaseAuth.instance.signInWithEmailAndPassword(email: email, password: password);
+      if (newUser != null) {
+        AlertUtils.toast("Login successful");
+        authenticateUser(newUser.user);
+      }
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        AlertUtils.toast('Invalid Credentials');
+      } else if (e.code == 'email-already-in-use') {
+        AlertUtils.toast('The account already exists for that email.');
+      }else {
+        AlertUtils.toast('${e.code}');
+        print(e.code);
+      }
+    } catch (e) {//e is the error message like 'The email address is already in use by another account.'
+      print(e);
+    }
   }
 
 
@@ -61,16 +110,15 @@ class _LoginRegisterState extends State<LoginRegister> {
     User user = await _authRepo.facebookSignIn();
 
     if (user != null) {
-      // AlertUtils.toast("Signing you in, please wait...");
+      AlertUtils.toast("Signing you in, please wait...");
       authenticateUser(user);
     }
   }
 
   void _googleSignIn() async {
-    await _authRepo.signOut(context);
-
     User user = await _authRepo.googleSignIn();
     if (user != null) {
+      AlertUtils.toast("Signing you in, please wait...");
       authenticateUser(user);
     }
   }
@@ -89,17 +137,16 @@ class _LoginRegisterState extends State<LoginRegister> {
   }
 
   void gotoHomePage() async{
-    print('Home.....');
+    print('Going to home.....');
 
-
-    // Navigator.pushReplacement(
-    //   context,
-    //   MaterialPageRoute(
-    //     builder: (context) {
-    //       return Home();
-    //     },
-    //   ),
-    // );
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) {
+          return ChatScreen();
+        },
+      ),
+    );
   }
   @override
   Widget build(BuildContext context) {
@@ -212,7 +259,7 @@ class _LoginRegisterState extends State<LoginRegister> {
                           borderRadius: BorderRadius.circular(25),
                         ),
                         child: Text(
-                          (logRegState == LogRegState.LOGIN) ? 'SIGN IN' : "LOG IN",
+                          (logRegState == LogRegState.LOGIN) ? 'SIGN IN' : "REGISTER",
                           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
                         ),
                       ),

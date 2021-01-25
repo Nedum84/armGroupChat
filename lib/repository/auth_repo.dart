@@ -11,7 +11,7 @@ import 'package:arm_group_chat/screen/login/login_register.dart';
 
 class AuthRepo {
 
-  final FirebaseAuth _auth = FirebaseAuth.instance;
+  static final FirebaseAuth _auth = FirebaseAuth.instance;
   GoogleSignIn _googleSignIn = GoogleSignIn();
   FacebookLogin _fbLogin = FacebookLogin();
 
@@ -32,7 +32,6 @@ class AuthRepo {
     }else{
       uid = userId;
     }
-
 
     DataSnapshot documentSnapshot = await _firebaseUserRef.child(uid).once();
     return AppUser.fromMap(documentSnapshot.value);
@@ -94,8 +93,6 @@ class AuthRepo {
     }
   }
 
-
-
   Future<bool> authenticateUser(User user) async {
     DataSnapshot result = await _firebaseUserRef
         .child(user.uid)
@@ -111,7 +108,7 @@ class AuthRepo {
     AppUser appUser = AppUser(
         uid: currentUser.uid,
         email: currentUser.email,
-        name: currentUser.displayName,
+        name: (currentUser.displayName==null||currentUser.displayName.isEmpty&&currentUser.email.isNotEmpty)?currentUser.email.split('@')[0]:currentUser.displayName,
         dateRegistered: DateTime.now().millisecondsSinceEpoch
     );
 
@@ -145,7 +142,7 @@ class AuthRepo {
     try {
       await _googleSignIn.signOut();
       await _auth.signOut();
-      // _gotoLoginPage(context);
+      _gotoLoginPage(context);
       return true;
     } catch (e) {
       print(e);

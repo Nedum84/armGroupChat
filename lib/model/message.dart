@@ -6,39 +6,38 @@ Message messageFromMap(String str) => Message.fromMap(json.decode(str));
 String messageToMap(Message data) => json.encode(data.toMap());
 
 class Message {
+  String key; //FROM RTDB
   String senderId;
-  String receiverId;
   String type;
   String message;
-  Timestamp timestamp;
+  int timestamp;
   String photoUrl;
 
   Message({
+    this.key,
     this.senderId,
-    this.receiverId,
     this.type,
     this.message,
     this.timestamp,
-    this.photoUrl,
+    this.photoUrl = '',
   });
 
-
-  Map<String, dynamic> toMap() =>{
+  Map<String, dynamic> toMap() => {
+        "key": key,
         "message": message,
         "senderId": senderId,
-        "receiverId": receiverId,
         "type": type,
         "timestamp": timestamp,
-        "photoUrl": photoUrl
-  };
+        "photoUrl": photoUrl,
+      };
 
   // named constructor
-  factory Message.fromMap(Map<String, dynamic> json) => Message(
-        senderId: json['senderId'],
-        receiverId: json['receiverId'],
+  factory Message.fromMap(Map<dynamic, dynamic> json) => Message(
+    key: json['key'],
+    senderId: json['senderId'],
         type: json['type'],
         message: json['message'],
         timestamp: json['timestamp'],
-        photoUrl: json['photoUrl']
-  );
+        photoUrl: json['photoUrl'],
+      );
 }

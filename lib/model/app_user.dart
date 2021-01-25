@@ -22,7 +22,7 @@ class AppUser {
   }
 
   // Named constructor
-  AppUser.fromMap(Map<String, dynamic> mapData) {
+  AppUser.fromMap(Map<dynamic, dynamic> mapData) {
     this.uid = mapData['uid'];
     this.name = mapData['name'];
     this.email = mapData['email'];

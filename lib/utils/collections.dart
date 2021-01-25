@@ -12,3 +12,5 @@ const String TIMESTAMP_FIELD = "timestamp";
 
 const String MESSAGE_TYPE_IMAGE = "image";
 
+const String MESSAGE_TYPE_TEXT = "text";
+
