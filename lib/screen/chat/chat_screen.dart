@@ -36,10 +36,8 @@ class _ChatScreenState extends State<ChatScreen> {
 
   TextEditingController textFieldController = TextEditingController();
   FocusNode textFieldFocus = FocusNode();
-  ScrollController _listScrollController = ScrollController();
 
   AppUser sender;
-
   bool isWriting = false;
 
   @override
@@ -48,7 +46,6 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   showKeyboard() => textFieldFocus.requestFocus();
-
   hideKeyboard() => textFieldFocus.unfocus();
 
   @override
@@ -138,6 +135,28 @@ class _ChatScreenState extends State<ChatScreen> {
     );
   }
 
+  getMessage(Message message) {
+    return message.type != MESSAGE_TYPE_IMAGE
+        ? Text(
+      message.message,
+      style: TextStyle(
+        color: Colors.black,
+        fontSize: 16.0,
+      ),
+    )
+        : message.photoUrl != null
+        ? GestureDetector(
+      onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => ViewImage(imageUrl: message.photoUrl))),
+      child: CachedImage(
+        message.photoUrl,
+        height: 250,
+        width: 250,
+        radius: 10,
+      ),
+    )
+        : Text("Invalid Url");
+  }
+
   Widget senderLayout(Message message) {
     Radius messageRadius = Radius.circular(10);
 
@@ -167,28 +186,6 @@ class _ChatScreenState extends State<ChatScreen> {
             )
           ],
         ));
-  }
-
-  getMessage(Message message) {
-    return message.type != MESSAGE_TYPE_IMAGE
-        ? Text(
-            message.message,
-            style: TextStyle(
-              color: Colors.black,
-              fontSize: 16.0,
-            ),
-          )
-        : message.photoUrl != null
-            ? GestureDetector(
-                onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => ViewImage(imageUrl: message.photoUrl))),
-                child: CachedImage(
-                  message.photoUrl,
-                  height: 250,
-                  width: 250,
-                  radius: 10,
-                ),
-              )
-            : Text("Invalid Url");
   }
 
   Widget receiverLayout(Message message) {
@@ -330,11 +327,6 @@ class _ChatScreenState extends State<ChatScreen> {
     );
   }
 
-  void pickImage({@required ImageSource source}) async {
-    File selectedImage = await Utilities.pickImage(source: source);
-    _storageMethods.uploadImage(image: selectedImage, senderId: sender.uid, imageUploadProvider: _imageUploadProvider);
-  }
-
   AppBar customAppBar(context) {
     return AppBar(
       backgroundColor: Colors.white,
@@ -379,8 +371,13 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
 
+  void pickImage({@required ImageSource source}) async {
+    File selectedImage = await Utilities.pickImage(source: source);
+    _storageMethods.uploadImage(image: selectedImage, senderId: sender.uid, imageUploadProvider: _imageUploadProvider);
+  }
+
   _logOutDialog() async {
-    textFieldFocus.unfocus();
+    hideKeyboard();
     showDialog(
       context: context,
       barrierDismissible: false,
@@ -389,7 +386,7 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   _closeAppDialog() async {
-    textFieldFocus.unfocus();
+    hideKeyboard();
     showDialog(
       context: context,
       barrierDismissible: false,

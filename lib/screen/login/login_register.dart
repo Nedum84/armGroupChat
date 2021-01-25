@@ -105,7 +105,6 @@ class _LoginRegisterState extends State<LoginRegister> {
     }
   }
 
-
   void _facebookSignIn() async {
     User user = await _authRepo.facebookSignIn();
 
@@ -137,8 +136,6 @@ class _LoginRegisterState extends State<LoginRegister> {
   }
 
   void gotoHomePage() async{
-    print('Going to home.....');
-
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(

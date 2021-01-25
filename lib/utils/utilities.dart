@@ -25,7 +25,7 @@ class Utilities {
     final path = tempDir.path;
     String rand = genRandString();
 
-    String targetPath = '$path/ic_$rand.jpg';
+    String targetPath = '$path/arm_$rand.jpg';
     var result = await FlutterImageCompress.compressAndGetFile(
       imageToCompress.absolute.path, targetPath,
       quality: 75,
