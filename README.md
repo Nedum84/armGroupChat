@@ -10,12 +10,12 @@ This project is has the following feature:<br />
 
 ## Screenshoots:
 
-#Login Screen<br /><br />
-![alt text](https://github.com/Nedum84/armGroupChat/blob/master/screenshots/login.png?raw=true)
+#Login Screen <br />
+![alt text](https://github.com/Nedum84/armGroupChat/blob/master/screenshots/login.png?raw=true)<br /><br />
 
-#Chat Screen 1<br /><br />
-![alt text](https://github.com/Nedum84/armGroupChat/blob/master/screenshots/chat-screen1.png)
+#Chat Screen 1 <br />
+![alt text](https://github.com/Nedum84/armGroupChat/blob/master/screenshots/chat-screen1.png)<br /><br />
 
-#Chat Screen 2<br /><br />
+#Chat Screen 2 <br />
 ![alt text](https://github.com/Nedum84/armGroupChat/blob/master/screenshots/chat-screen2.png)
 
