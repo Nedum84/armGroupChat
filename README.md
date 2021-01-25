@@ -1,6 +1,6 @@
 # ARM Group Chat
 
-A Mobile application for ARM group using Firebase Realtime database.
+A Mobile application built with Flutter for ARM group using Firebase Realtime database.
 
 ## Features
 
@@ -12,7 +12,6 @@ This project is has the following feature:<br />
 
 #Login Screen<br /><br />
 ![alt text](https://github.com/Nedum84/armGroupChat/blob/master/screenshots/login.png?raw=true)
-![alt text](https://prnt.sc/xlg63u)
 
 #Chat Screen 1<br /><br />
 ![alt text](https://github.com/Nedum84/armGroupChat/blob/master/screenshots/chat-screen1.png)
