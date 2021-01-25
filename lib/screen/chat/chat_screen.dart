@@ -10,6 +10,8 @@ import 'package:arm_group_chat/utils/alert_utils.dart';
 import 'package:arm_group_chat/utils/collections.dart';
 import 'package:arm_group_chat/utils/colors.dart';
 import 'package:arm_group_chat/utils/utilities.dart';
+import 'package:arm_group_chat/widgets/alert_dialog/close_app_warning.dart';
+import 'package:arm_group_chat/widgets/alert_dialog/log_out_overlay.dart';
 import 'package:arm_group_chat/widgets/cached_image.dart';
 import 'package:arm_group_chat/widgets/choose_image_from.dart';
 import 'package:arm_group_chat/widgets/view_image.dart';
@@ -55,42 +57,35 @@ class _ChatScreenState extends State<ChatScreen> {
 
     return WillPopScope(
       onWillPop: () async {
-        if (_imageUploadProvider.getImageViewState == ImageViewState.LOADING) {
-          AlertUtils.toast('Wait for the image to finish uploading');
-          return false;
-        } else {
-          return true;
-        }
-        ;
+        _closeAppDialog();
+        return Future.value(false);
       },
-      child: FutureBuilder<AppUser>(
-        future: _authRepo.getUserDetails(),
-        builder: (context, snapshot) {
-          if(!snapshot.hasData) return Center(child: CircularProgressIndicator());
-          sender = snapshot.data;
-          print(sender.toMap(sender));
-
-          return Scaffold(
-            backgroundColor: Color(0xffEEF2F4),
-            appBar: customAppBar(context),
-            body: Column(
-              children: <Widget>[
-                Flexible(
-                  child: messageList(),
-                ),
-                _imageUploadProvider.getImageViewState == ImageViewState.LOADING
-                    ? Container(
-                        alignment: Alignment.centerRight,
-                        margin: EdgeInsets.only(right: 15),
-                        child: CircularProgressIndicator(),
-                      )
-                    : Container(),
-                chatControls(),
-                // showEmojiPicker ? Container(child: emojiContainer()) : Container(),
-              ],
-            ),
-          );
-        }
+      child: Scaffold(
+        backgroundColor: Color(0xffEEF2F4),
+        appBar: customAppBar(context),
+        body: FutureBuilder<AppUser>(
+            future: _authRepo.getUserDetails(),
+            builder: (context, snapshot) {
+              if(!snapshot.hasData) return Center(child: CircularProgressIndicator());
+              sender = snapshot.data;
+              return Column(
+                children: <Widget>[
+                  Flexible(
+                    child: messageList(),
+                  ),
+                  _imageUploadProvider.getImageViewState == ImageViewState.LOADING
+                      ? Container(
+                    alignment: Alignment.centerRight,
+                    margin: EdgeInsets.only(right: 15),
+                    child: CircularProgressIndicator(),
+                  )
+                      : Container(),
+                  chatControls(),
+                  // showEmojiPicker ? Container(child: emojiContainer()) : Container(),
+                ],
+              );
+            }
+        ),
       ),
     );
   }
@@ -255,7 +250,6 @@ class _ChatScreenState extends State<ChatScreen> {
     sendMessage() {
       var text = textFieldController.text;
 
-
       Message _message = Message(
         senderId: sender.uid,
         message: text,
@@ -350,9 +344,7 @@ class _ChatScreenState extends State<ChatScreen> {
           Icons.arrow_back,
           color: Colors.blueGrey,
         ),
-        onPressed: () {
-          Navigator.pop(context);
-        },
+        onPressed: _closeAppDialog,
       ),
       centerTitle: false,
       title: Row(
@@ -380,9 +372,30 @@ class _ChatScreenState extends State<ChatScreen> {
             Icons.power_settings_new,
             color: Colors.blueGrey,
           ),
-          onPressed: () async => null,
+          onPressed: _logOutDialog,
         )
       ],
+    );
+  }
+
+
+  _logOutDialog() async {
+    textFieldFocus.unfocus();
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (_) => LogoutOverlay(),
+    );
+  }
+
+  _closeAppDialog() async {
+    textFieldFocus.unfocus();
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (_) => WillPopScope(
+          onWillPop: () => Future.value(false),
+          child: CloseAppWarning()),
     );
   }
 }

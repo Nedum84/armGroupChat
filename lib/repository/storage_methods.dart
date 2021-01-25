@@ -3,6 +3,7 @@ import 'package:arm_group_chat/model/message.dart';
 import 'package:arm_group_chat/provider/image_upload_provider.dart';
 import 'package:arm_group_chat/repository/chat_repo.dart';
 import 'package:arm_group_chat/utils/collections.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/widgets.dart';
 
@@ -49,7 +50,7 @@ class StorageMethods {
     message.type = MESSAGE_TYPE_IMAGE;
     message.message = '';
     message.photoUrl = url;
-    message.timestamp = DateTime.now().millisecondsSinceEpoch;
+    message.timestamp = Timestamp.now().microsecondsSinceEpoch;
 
     ChatRepo.addMessageToDb(message);
   }

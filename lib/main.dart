@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'provider/image_upload_provider.dart';
-import 'screen/login/login_register.dart';
+import 'screen/splash_screen.dart';
 
 void main() {
   runApp(MyApp());
@@ -16,12 +16,13 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => ImageUploadProvider()),
       ],
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         title: 'ARG Group Chat',
         theme: ThemeData(
           primarySwatch: Colors.blue,
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
-        home: LoginRegister(),
+        home: SplashScreen(),
       ),
     );
   }
